@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>add.html</title>
+
+<meta name="keywords" content="keyword1,keyword2,keyword3">
+<meta name="description" content="this is my page">
+<meta name="content-type" content="text/html; charset=UTF-8">
+
+<script type="text/javascript" src="../pintuer/jquery.js"></script>
+
+
+</head>
+
+<body>
+	<form id="tf">
+		<div>
+			h5标题:<input type="text" id="title" name="title" />
+		</div>
+		<div>
+			h5链接地址:<input type="text" id="url" name="url" />
+		</div>
+		<div>
+			出品公司:<input type="text" id="company" name="company" />
+		</div>
+		<div>
+			出品产品:<input type="text" id="product" name="product" />
+		</div>
+		<div>
+			出品时间:<input type="date" id="productionTime" name="productionTime" />
+		</div>
+		<div>
+			是否可用iframe嵌入:<input type="radio" id="embeddedIframe" name="embeddedIframe" />
+		</div>
+		<input id="file" name="file" type="file" />
+		<div>
+			h5缩略图地址:<input type="text" id="thumb" name="thumb" size="70" disabled />
+		</div>
+		<input type="button" value="提" onclick="ri();" />
+	</form>
+	<!-- <input type="submit" name="submit" value="提交"> -->
+
+</body>
+<script>
+	$("#file").on("change", function() {
+		var formData = new FormData();
+		formData.append("file", $("#file")[0].files[0]);
+		$.ajax({
+			url : "http://localhost:8084/h5/fileUpload.json",
+			type : "POST",
+			data : formData,
+			processData : false,
+			contentType : false,
+			success : function(data) {
+				$("#thumb").val(data.URL);
+				alert(data.MESSAGE);
+			}
+		});
+	});
+	function ri() {
+		var form = new FormData();
+		var title = $("#title").val();
+		var url = $("#url").val();
+		var company = $("#company").val();
+		var product = $("#product").val();
+		var productionTime = $("#productionTime").val();
+		var embeddedIframe = $("#embeddedIframe").prop("checked");
+		var thumb = $("#thumb").val();
+		form.append("title", title);
+		form.append("url", url);
+		form.append("company", company);
+		form.append("product", product);
+		form.append("productionTime", productionTime);
+		form.append("embeddedIframe", embeddedIframe);
+		form.append("thumb", thumb);
+		alert("title:" + title + "url:" + url + " company:" + company
+				+ " product:" + product + " productionTime:" + productionTime
+				+ " embeddedIframe:" + embeddedIframe + " thumb:"+thumb);
+		  $.ajax({
+		 url:"http://localhost:8084/h5/save.json",
+		 type:"post",
+		 data:form,
+		 processData:false,
+		 contentType:false,
+		 success:function(data){
+                alert(data.MESSAGE);
+		 }
+		 }); 
+	}
+</script>
+</html>

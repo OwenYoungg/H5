@@ -118,6 +118,7 @@ public class H5Controller {
         Map<String, Object> map = new HashMap<>();
         try {
             H5Count h5count=new H5Count();
+            h5info.setUploadTime(new Date());
             h5InfoService.saveH5Info(h5info);
             h5count.setH5Info(h5info);
             h5CountService.saveH5Count(h5count);

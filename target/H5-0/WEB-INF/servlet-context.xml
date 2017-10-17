@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:jee="http://www.springframework.org/schema/jee" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:context="http://www.springframework.org/schema/context" xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+	http://www.springframework.org/schema/aop  http://www.springframework.org/schema/aop/spring-aop-3.0.xsd 
+	http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
+	http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-3.0.xsd
+	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
+	http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd ">
+	<!-- 扫描所有的controller -->
+	<context:component-scan base-package="com.springmvc.controller" />
+
+
+	<!-- 配置静态资源，直接映射到对应的文件夹，不被DispatcherServlet处理，3.04新增功能 -->
+	<bean id="localeResolver" class="org.springframework.web.servlet.i18n.CookieLocaleResolver" />
+	<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="prefix" value="/WEB-INF/views/" />
+		<property name="suffix" value=".html" />
+	</bean>
+	<aop:aspectj-autoproxy proxy-target-class="true" />
+	<mvc:resources location="/" mapping="/*.html" />
+	<mvc:resources location="/" mapping="/**/*.js" />
+	<mvc:resources location="/" mapping="/**/*.css" />
+	<mvc:resources location="/" mapping="/**/*.png" />
+	<mvc:resources location="/" mapping="/**/*.gif" />
+	<!-- 拦截器 -->
+	<mvc:interceptors>
+		<mvc:interceptor>
+			<mvc:mapping path="/**" />
+			<mvc:exclude-mapping path="/" />
+			<mvc:exclude-mapping path="/**/*.js" />
+			<mvc:exclude-mapping path="/user/login*" />
+			<mvc:exclude-mapping path="/user/sessionTimeout*" />
+			<bean class="com.springmvc.interceptor.CommonInterceptor" />
+		</mvc:interceptor>
+	</mvc:interceptors>
+</beans>
