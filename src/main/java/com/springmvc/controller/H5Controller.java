@@ -1,10 +1,15 @@
 package com.springmvc.controller;
 
+import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -21,6 +26,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.springmvc.entity.H5Count;
 import com.springmvc.entity.H5Info;
 import com.springmvc.service.H5CountService;
@@ -36,6 +42,71 @@ public class H5Controller {
     private H5CountService h5CountService;
     @Value("${domain}")
     private String domain;
+    @Value("${wechat_appid}")
+    private String appid;
+    @Value("${wechat_secret}")
+    private String secret;
+    
+    @RequestMapping("/getTokenByWechatCode")
+  public Map<String, Object> getTokenByWechatCode(HttpServletRequest request, HttpServletResponse response,
+          HttpSession session,String code) {
+      Map<String, Object> map = new HashMap<>();
+      try {
+       // 定义即将访问的链接
+          String url = "https://api.weixin.qq.com/sns/oauth2/access_token?appid="+appid+"&secret="+secret+"&code="+code+"&grant_type=authorization_code";
+          // 定义一个字符串用来存储网页内容
+          String result = "";
+          // 定义一个缓冲字符输入流
+          BufferedReader in = null;
+          try
+          {
+              // 将string转成url对象
+              URL realUrl = new URL(url);
+              // 初始化一个链接到那个url的连接
+              URLConnection connection = realUrl.openConnection();
+              // 开始实际的连接
+              connection.connect();
+              // 初始化 BufferedReader输入流来读取URL的响应
+              in = new BufferedReader(new InputStreamReader(connection.getInputStream(),"utf-8"));
+              // 用来临时存储抓取到的每一行的数据
+              String line;
+              while ((line = in.readLine()) != null)
+              {
+                  // 遍历抓取到的每一行并将其存储到result里面
+                  result += line + "\n";
+              }
+          } catch (Exception e)
+          {
+              System.out.println("发送GET请求出现异常！" + e);
+              e.printStackTrace();
+          } // 使用finally来关闭输入流
+          finally
+          {
+              try
+              {
+                  if (in != null)
+                  {
+                      in.close();
+                  }
+              } catch (Exception e2)
+              {
+                  e2.printStackTrace();
+              }
+          }
+          ObjectMapper mapper = new ObjectMapper();
+          Map mapData=mapper.readValue(result, Map.class);
+          map.put("DATA", mapData);
+          map.put("SUCCESS", true);
+          map.put("MESSAGE", "查询成功");
+          return map;
+      } catch (Exception e) {
+          e.printStackTrace();
+          map.put("SUCCESS", false);
+          map.put("EXCEPTION", e.getMessage());
+          map.put("MESSAGE", "查询失败!");
+          return map;
+      }
+  }
 
     /**
      * @description 得到H5Info的list
