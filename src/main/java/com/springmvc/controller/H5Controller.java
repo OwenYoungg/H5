@@ -15,6 +15,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -29,9 +30,12 @@ import org.springframework.web.multipart.commons.CommonsMultipartFile;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.springmvc.entity.H5Count;
 import com.springmvc.entity.H5Info;
+import com.springmvc.entity.H5Users;
 import com.springmvc.service.H5CountService;
 import com.springmvc.service.H5InfoService;
+import com.springmvc.service.H5UsersService;
 import com.springmvc.util.ImageUtils;
+import com.springmvc.util.Utils;
 
 @RestController
 @RequestMapping("/h5")
@@ -40,6 +44,8 @@ public class H5Controller {
     private H5InfoService h5InfoService;
     @Autowired
     private H5CountService h5CountService;
+    @Resource(name="h5UsersService")
+    private H5UsersService userService;
     @Value("${domain}")
     private String domain;
     @Value("${wechat_appid}")
@@ -47,6 +53,16 @@ public class H5Controller {
     @Value("${wechat_secret}")
     private String secret;
     
+    /**
+     * @description 根据code得到token
+     * @author guoyang
+     * @date 2017年10月18日
+     * @param request
+     * @param response
+     * @param session
+     * @param code 微信提供的code
+     * @return
+     */
     @RequestMapping("/getTokenByWechatCode")
   public Map<String, Object> getTokenByWechatCode(HttpServletRequest request, HttpServletResponse response,
           HttpSession session,String code) {
@@ -54,47 +70,74 @@ public class H5Controller {
       try {
        // 定义即将访问的链接
           String url = "https://api.weixin.qq.com/sns/oauth2/access_token?appid="+appid+"&secret="+secret+"&code="+code+"&grant_type=authorization_code";
-          // 定义一个字符串用来存储网页内容
-          String result = "";
-          // 定义一个缓冲字符输入流
-          BufferedReader in = null;
-          try
-          {
-              // 将string转成url对象
-              URL realUrl = new URL(url);
-              // 初始化一个链接到那个url的连接
-              URLConnection connection = realUrl.openConnection();
-              // 开始实际的连接
-              connection.connect();
-              // 初始化 BufferedReader输入流来读取URL的响应
-              in = new BufferedReader(new InputStreamReader(connection.getInputStream(),"utf-8"));
-              // 用来临时存储抓取到的每一行的数据
-              String line;
-              while ((line = in.readLine()) != null)
-              {
-                  // 遍历抓取到的每一行并将其存储到result里面
-                  result += line + "\n";
-              }
-          } catch (Exception e)
-          {
-              System.out.println("发送GET请求出现异常！" + e);
-              e.printStackTrace();
-          } // 使用finally来关闭输入流
-          finally
-          {
-              try
-              {
-                  if (in != null)
-                  {
-                      in.close();
+          Map mapData=Utils.httpGet(url);
+          map.put("DATA", mapData);
+          map.put("SUCCESS", true);
+          map.put("MESSAGE", "查询成功");
+          return map;
+      } catch (Exception e) {
+          e.printStackTrace();
+          map.put("SUCCESS", false);
+          map.put("EXCEPTION", e.getMessage());
+          map.put("MESSAGE", "查询失败!");
+          return map;
+      }
+  }
+
+   
+    @RequestMapping("/getUserInfoByWechatCode")
+  public Map<String, Object> getUserInfoByWechatCode(HttpServletRequest request, HttpServletResponse response,
+          HttpSession session,String code) {
+      Map<String, Object> map = new HashMap<>();
+      try {
+       // 通过code 获取
+          String url = "https://api.weixin.qq.com/sns/oauth2/access_token?appid="+appid+"&secret="+secret+"&code="+code+"&grant_type=authorization_code";
+          Map mapData=Utils.httpGet(url);
+          /*判断是否返回错误信息 code无效 返回{"errcode":40029,"errmsg":"invalid code"} 
+                                  正常返回:
+          { "access_token":"ACCESS_TOKEN",    
+              "expires_in":7200,    
+              "refresh_token":"REFRESH_TOKEN",    
+              "openid":"OPENID",    
+              "scope":"SCOPE" } */
+          if(mapData.get("access_token")!=null){
+              System.out.println("access_token:"+mapData.get("access_token"));
+              System.out.println("openid:"+mapData.get("openid"));
+              url="https://api.weixin.qq.com/sns/userinfo?access_token="+mapData.get("access_token")+"&openid="+mapData.get("openid")+"&lang=zh_CN";
+              System.out.println(url);
+              mapData=Utils.httpGet(url);
+              /*正确时返回的JSON数据包如下：
+              {    "openid":" OPENID",  
+               " nickname": NICKNAME,   
+               "sex":"1",   
+               "province":"PROVINCE"   
+               "city":"CITY",   
+               "country":"COUNTRY",    
+               "headimgurl":    "http://wx.qlogo.cn/mmopen/g3MonUZtNHkdmzicIlibx6iaFqAc56vxLSUfpb6n5WKSYVY0ChQKkiaJSgQ1dZuTOgvLLrhJbERQQ
+              4eMsv84eavHiaiceqxibJxCfHe/46",  
+              "privilege":[ "PRIVILEGE1" "PRIVILEGE2"     ],    
+               "unionid": "o6_bmasdasdsad6_2sgVt7hMZOPfL" 
+              } */
+              System.out.println("nickname:"+mapData.get("nickname"));
+              System.out.println("headimgurl:"+mapData.get("headimgurl"));
+              if(mapData.get("nickname")!=null){
+                  H5Users h5users=userService.getH5UserByOpenId((String) mapData.get("openid"));
+                  if(h5users==null){//初次登录入库
+                      h5users=new H5Users();
+                      h5users.setCreateTime(new Date());
+                      h5users.setLastLoginTime(new Date());
+                      h5users.setNickname((String) mapData.get("nickname"));
+                      h5users.setOpenId((String) mapData.get("openid"));
+                      System.out.println("新增用户 openid:" +mapData.get("openid"));
+                  }else{//非初次登录更新最后登录时间
+                      h5users.setLastLoginTime(new Date());
+                      System.out.println("更新用户 openid:" +mapData.get("openid"));
                   }
-              } catch (Exception e2)
-              {
-                  e2.printStackTrace();
+                  userService.saveOrUpdateH5User(h5users);  
+                  System.out.println("保存用户成功");
               }
+              
           }
-          ObjectMapper mapper = new ObjectMapper();
-          Map mapData=mapper.readValue(result, Map.class);
           map.put("DATA", mapData);
           map.put("SUCCESS", true);
           map.put("MESSAGE", "查询成功");

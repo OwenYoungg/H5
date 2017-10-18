@@ -41,7 +41,7 @@ public class H5UsersRepository  {
     public void saveOrUpdateH5User(H5Users h5users){
         getSession().saveOrUpdate(h5users);        
     }
-    public H5Users getH5UserByOpenId(Integer openId){
+    public H5Users getH5UserByOpenId(String openId){
         if(openId==null){
             return null;
         }

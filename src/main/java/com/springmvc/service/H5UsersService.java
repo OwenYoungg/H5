@@ -28,5 +28,10 @@ public class H5UsersService {
 	public H5Users getH5UsersById(Integer id){
 	    return h5UsersRepository.getH5User(id);
 	}
-
+	public void saveOrUpdateH5User(H5Users h5users){
+	    h5UsersRepository.saveOrUpdateH5User(h5users);
+	}
+    public H5Users getH5UserByOpenId(String openId){
+        return h5UsersRepository.getH5UserByOpenId(openId);
+    }
 }
