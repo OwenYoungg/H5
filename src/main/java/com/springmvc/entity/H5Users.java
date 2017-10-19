@@ -9,6 +9,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
@@ -16,7 +17,8 @@ import javax.validation.constraints.NotNull;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-@Entity(name="h5_user")
+@Entity
+@Table(name="h5_user")
 @JsonIgnoreProperties(value={"hibernateLazyInitializer","handler","fieldHandler"}) 
 public class H5Users implements Serializable{
 	

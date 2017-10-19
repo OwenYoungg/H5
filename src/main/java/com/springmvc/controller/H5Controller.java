@@ -1,15 +1,10 @@
 package com.springmvc.controller;
 
-import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.OutputStream;
-import java.net.URL;
-import java.net.URLConnection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -20,6 +15,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,7 +24,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.springmvc.entity.H5Count;
 import com.springmvc.entity.H5Info;
 import com.springmvc.entity.H5Users;
@@ -40,6 +36,7 @@ import com.springmvc.util.Utils;
 @RestController
 @RequestMapping("/h5")
 public class H5Controller {
+    Logger logger = LoggerFactory.getLogger(H5Controller.class);
     @Autowired
     private H5InfoService h5InfoService;
     @Autowired
@@ -76,7 +73,7 @@ public class H5Controller {
           map.put("MESSAGE", "查询成功");
           return map;
       } catch (Exception e) {
-          e.printStackTrace();
+          logger.error(e.getMessage(), e);
           map.put("SUCCESS", false);
           map.put("EXCEPTION", e.getMessage());
           map.put("MESSAGE", "查询失败!");
@@ -101,10 +98,7 @@ public class H5Controller {
               "openid":"OPENID",    
               "scope":"SCOPE" } */
           if(mapData.get("access_token")!=null){
-              System.out.println("access_token:"+mapData.get("access_token"));
-              System.out.println("openid:"+mapData.get("openid"));
               url="https://api.weixin.qq.com/sns/userinfo?access_token="+mapData.get("access_token")+"&openid="+mapData.get("openid")+"&lang=zh_CN";
-              System.out.println(url);
               mapData=Utils.httpGet(url);
               /*正确时返回的JSON数据包如下：
               {    "openid":" OPENID",  
@@ -118,8 +112,7 @@ public class H5Controller {
               "privilege":[ "PRIVILEGE1" "PRIVILEGE2"     ],    
                "unionid": "o6_bmasdasdsad6_2sgVt7hMZOPfL" 
               } */
-              System.out.println("nickname:"+mapData.get("nickname"));
-              System.out.println("headimgurl:"+mapData.get("headimgurl"));
+              logger.info((String) mapData.get("nickname"));
               if(mapData.get("nickname")!=null){
                   H5Users h5users=userService.getH5UserByOpenId((String) mapData.get("openid"));
                   if(h5users==null){//初次登录入库
@@ -128,13 +121,14 @@ public class H5Controller {
                       h5users.setLastLoginTime(new Date());
                       h5users.setNickname((String) mapData.get("nickname"));
                       h5users.setOpenId((String) mapData.get("openid"));
-                      System.out.println("新增用户 openid:" +mapData.get("openid"));
+                      logger.info("即将新增用户openId:"+mapData.get("openid"));
                   }else{//非初次登录更新最后登录时间
                       h5users.setLastLoginTime(new Date());
-                      System.out.println("更新用户 openid:" +mapData.get("openid"));
+                      logger.info("即将更新用户openId:"+mapData.get("openid"));
                   }
                   userService.saveOrUpdateH5User(h5users);  
-                  System.out.println("保存用户成功");
+                  mapData.put("userId", h5users.getId());
+                  logger.info("保存用户成功userId:"+h5users.getId());
               }
               
           }
@@ -143,7 +137,7 @@ public class H5Controller {
           map.put("MESSAGE", "查询成功");
           return map;
       } catch (Exception e) {
-          e.printStackTrace();
+          logger.error(e.getMessage(), e);
           map.put("SUCCESS", false);
           map.put("EXCEPTION", e.getMessage());
           map.put("MESSAGE", "查询失败!");
@@ -167,16 +161,13 @@ public class H5Controller {
             HttpSession session,Integer type,Integer pageNum,Integer pageCount) {
         Map<String, Object> map = new HashMap<>();
         try {
-//            List<H5Info> list = h5InfoService.getH5InfoList(type);
-            // Map<String, List<Goods>> maplist=Utils.goodsListToMap(list);
-//            List<H5Count> list = h5CountService.getH5CountList(type);
             List<H5Info> list =h5InfoService.getH5InfoList(type,pageNum,pageCount);
             map.put("DATA", list);
             map.put("SUCCESS", true);
             map.put("MESSAGE", "查询成功");
             return map;
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
             map.put("SUCCESS", false);
             map.put("EXCEPTION", e.getMessage());
             map.put("MESSAGE", "查询失败!");
@@ -194,21 +185,17 @@ public class H5Controller {
      * @return
      */
     @RequestMapping("/detail")
-//  @ResponseBody
   public Map<String, Object> getH5infoById(HttpServletRequest request, HttpServletResponse response,
           HttpSession session,Integer id) {
       Map<String, Object> map = new HashMap<>();
       try {
-//          List<H5Info> list = h5InfoService.getH5InfoList(type);
-          // Map<String, List<Goods>> maplist=Utils.goodsListToMap(list);
-//          List<H5Count> list = h5CountService.getH5CountList(type);
           H5Info h5Info=h5InfoService.getH5InfoById(id);
           map.put("DATA", h5Info);
           map.put("SUCCESS", true);
           map.put("MESSAGE", "查询成功");
           return map;
       } catch (Exception e) {
-          e.printStackTrace();
+          logger.error(e.getMessage(), e);
           map.put("SUCCESS", false);
           map.put("EXCEPTION", e.getMessage());
           map.put("MESSAGE", "查询失败!");
@@ -241,7 +228,7 @@ public class H5Controller {
             map.put("MESSAGE", "保存成功");
             return map;
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
             map.put("SUCCESS", false);
             map.put("EXCEPTION", e.getMessage());
             map.put("MESSAGE", "保存失败!");
@@ -275,7 +262,7 @@ public class H5Controller {
             map.put("MESSAGE", "保存成功");
             return map;
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
             map.put("SUCCESS", false);
             map.put("EXCEPTION", e.getMessage());
             map.put("MESSAGE", "保存失败!");
@@ -310,31 +297,13 @@ public class H5Controller {
             map.put("MESSAGE", "删除成功");
             return map;
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
             map.put("SUCCESS", false);
             map.put("EXCEPTION", e.getMessage());
             map.put("MESSAGE", "删除失败!");
             return map;
         }
     }
-    // @RequestMapping("/detail")
-    // @ResponseBody
-    // public Map<String, Object> getGoods(HttpServletRequest request,
-    // HttpServletResponse response, HttpSession session,Integer goodsId) {
-    // Map<String, Object> map = new HashMap<>();
-    // try {
-    // Goods goods = goodsService.getGoodsById(goodsId);
-    // map.put("DATA", goods);
-    // map.put("SUCCESS", true);
-    // map.put("MESSAGE", "查询成功");
-    // return map;
-    // } catch (Exception e) {
-    // e.printStackTrace();
-    // map.put("SUCCESS", false);
-    // map.put("MESSAGE", "查询失败");
-    // return map;
-    // }
-    // }
     /*
      * 通过流的方式上传文件
      * @RequestParam("file") 将name=file控件得到的文件封装成CommonsMultipartFile 对象
@@ -353,7 +322,6 @@ public class H5Controller {
             String root=request.getSession().getServletContext().getRealPath("/");
             String fileName=new Date().getTime()+file.getOriginalFilename();
             String uri=root+"images\\"+fileName;
-//            System.out.println(uri);
             //获取输出流
             OutputStream os=new FileOutputStream(uri);
             //获取输入流 CommonsMultipartFile 中可以直接得到文件的流
@@ -370,8 +338,7 @@ public class H5Controller {
            new ImageUtils().thumbnailImage(uri, 150, 100);
            url+=domain+"/images/"+fileName;
         } catch (FileNotFoundException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
             map.put("SUCCESS", false);
             map.put("EXCEPTION", e.getMessage());
             map.put("MESSAGE", "上传失败!");

@@ -46,9 +46,10 @@ public class H5UsersRepository  {
             return null;
         }
         try {
-            String hsql="from H5Users a where a.openId="+openId;        
+            String hsql="from H5Users a where a.openId=:openId";        
             Session session = sessionFactory.getCurrentSession();
-            Query query = session.createQuery(hsql);        
+            Query query = session.createQuery(hsql);    
+            query.setString("openId", openId);    
             return (H5Users) query.list().get(0); 
         } catch (Exception e) {
             e.printStackTrace();

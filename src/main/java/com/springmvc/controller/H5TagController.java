@@ -9,6 +9,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -26,6 +28,7 @@ import com.springmvc.service.H5UsersService;
 @RestController
 @RequestMapping("/h5tag")
 public class H5TagController {
+    Logger logger = LoggerFactory.getLogger(H5TagController.class);
     @Autowired
     private H5TagService h5TagService;
     @Autowired
@@ -36,41 +39,6 @@ public class H5TagController {
     private H5CountService h5CountService;
     @Autowired
     private H5UsersService h5UsersService;
-//    
-//    @RequestMapping("/list")
-//    @ResponseBody
-//    public Map<String, Object> getList(HttpServletRequest request, HttpServletResponse response, HttpSession session) {
-//        Map<String, Object> map = new HashMap<>();
-//        try {
-//            List<GoodsType> list = goodsTypeService.getGoodsTypeList();
-//            map.put("DATA", list);
-//            map.put("SUCCESS", true);
-//            map.put("MESSAGE", "查询成功");
-//            return map;
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            map.put("SUCCESS", false);
-//            map.put("MESSAGE", "查询失败");
-//            return map;
-//        }
-//    }
-//    @RequestMapping("/detail")
-//    @ResponseBody
-//    public Map<String, Object> getGoodsType(HttpServletRequest request, HttpServletResponse response, HttpSession session,Integer goodsTypeId) {
-//        Map<String, Object> map = new HashMap<>();
-//        try {
-//            GoodsType goodsType = goodsTypeService.getGoodsTypeById(goodsTypeId);
-//            map.put("DATA", goodsType);
-//            map.put("SUCCESS", true);
-//            map.put("MESSAGE", "查询成功");
-//            return map;
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            map.put("SUCCESS", false);
-//            map.put("MESSAGE", "查询失败");
-//            return map;
-//        }
-//    }
 
     @RequestMapping(value="/views")
     public Map<String, Object> views(HttpServletRequest request, HttpServletResponse response,
@@ -100,7 +68,7 @@ public class H5TagController {
             map.put("MESSAGE", "浏览成功");
             return map;
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
             map.put("SUCCESS", false);
             map.put("EXCEPTION", e.getMessage());
             map.put("MESSAGE", "浏览失败!");
@@ -135,7 +103,7 @@ public class H5TagController {
             map.put("MESSAGE", "分享成功");
             return map;
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
             map.put("SUCCESS", false);
             map.put("EXCEPTION", e.getMessage());
             map.put("MESSAGE", "分享失败!");
@@ -188,7 +156,7 @@ public class H5TagController {
             map.put("MESSAGE", "点赞成功");
             return map;
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
             map.put("SUCCESS", false);
             map.put("EXCEPTION", e.getMessage());
             map.put("MESSAGE", "点赞失败!");
@@ -206,7 +174,6 @@ public class H5TagController {
      * @return
      */
     @RequestMapping("/getH5TagListByH5InfoId")
-//  @ResponseBody
   public Map<String, Object> getH5TagListByH5InfoId(HttpServletRequest request, HttpServletResponse response,
           HttpSession session,Integer h5InfoId) {
       Map<String, Object> map = new HashMap<>();
@@ -217,7 +184,7 @@ public class H5TagController {
           map.put("MESSAGE", "查询成功");
           return map;
       } catch (Exception e) {
-          e.printStackTrace();
+          logger.error(e.getMessage(), e);
           map.put("SUCCESS", false);
           map.put("EXCEPTION", e.getMessage());
           map.put("MESSAGE", "查询失败!");
@@ -258,7 +225,7 @@ public class H5TagController {
             map.put("MESSAGE", "保存成功");
             return map;
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
             map.put("SUCCESS", false);
             map.put("EXCEPTION", e.getMessage());
             map.put("MESSAGE", "保存失败!");
@@ -300,7 +267,7 @@ public class H5TagController {
             map.put("MESSAGE", "保存成功");
             return map;
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
             map.put("SUCCESS", false);
             map.put("EXCEPTION", e.getMessage());
             map.put("MESSAGE", "保存失败!");
@@ -334,7 +301,7 @@ public class H5TagController {
             map.put("MESSAGE", "删除成功");
             return map;
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
             map.put("SUCCESS", false);
             map.put("EXCEPTION", e.getMessage());
             map.put("MESSAGE", "删除失败!");

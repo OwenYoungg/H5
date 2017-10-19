@@ -8,11 +8,15 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class Utils {
+    static Logger logger = LoggerFactory.getLogger(Utils.class);
 
     public static  <T> void mergeObject(T origin, T destination) {
         if (origin == null || destination == null)
@@ -35,6 +39,7 @@ public class Utils {
     }
     public static Map httpGet(String url) throws JsonParseException, JsonMappingException, IOException{
 //        Map map =new HashMap();
+        logger.info("发送GET请求url:" + url);
      // 定义即将访问的链接
 //        String url = "https://api.weixin.qq.com/sns/oauth2/access_token?appid="+appid+"&secret="+secret+"&code="+code+"&grant_type=authorization_code";
         // 定义一个字符串用来存储网页内容
@@ -60,8 +65,7 @@ public class Utils {
             }
         } catch (Exception e)
         {
-            System.out.println("发送GET请求出现异常！" + e);
-            e.printStackTrace();
+            logger.error("发送GET请求出现异常！" + e,e);
         } // 使用finally来关闭输入流
         finally
         {
@@ -76,6 +80,7 @@ public class Utils {
                 e2.printStackTrace();
             }
         }
+        logger.info("发送GET请求result:" + result);
         ObjectMapper mapper = new ObjectMapper();
         Map map=mapper.readValue(result, Map.class);
         return map;
