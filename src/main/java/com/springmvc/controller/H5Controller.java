@@ -124,6 +124,7 @@ public class H5Controller {
                       logger.info("即将新增用户openId:"+mapData.get("openid"));
                   }else{//非初次登录更新最后登录时间
                       h5users.setLastLoginTime(new Date());
+                      h5users.setNickname((String) mapData.get("nickname"));
                       logger.info("即将更新用户openId:"+mapData.get("openid"));
                   }
                   userService.saveOrUpdateH5User(h5users);  
