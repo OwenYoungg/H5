@@ -20,9 +20,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.springmvc.entity.H5Count;
 import com.springmvc.entity.H5Info;
@@ -457,5 +459,12 @@ public class H5Controller {
         map.put("SUCCESS", true);
         map.put("MESSAGE", "上传成功");
         return map;
+    }
+    
+    @RequestMapping(value="/H5Index",method={RequestMethod.GET})
+    public ModelAndView H5AdminIndex(HttpServletRequest request, HttpServletResponse response){
+    	ModelAndView view = new ModelAndView();
+		view.setViewName("H5Index");
+		return view;
     }
 }
