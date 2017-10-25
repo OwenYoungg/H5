@@ -9,6 +9,7 @@ import com.springmvc.entity.H5Users;
 import com.springmvc.repository.H5UsersRepository;
 
 @Service("h5UsersService")
+@Transactional
 public class H5UsersService {
 	@Resource
 	private H5UsersRepository h5UsersRepository;

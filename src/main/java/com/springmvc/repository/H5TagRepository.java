@@ -36,30 +36,14 @@ public class H5TagRepository {
     public void removeH5Tag(H5Tag h5Tag){
         getSession().delete(h5Tag);;
     }
-//    public List<OrderList> getOrderList(OrderList selectOrder,Integer orderId){
-//        String hsql="from OrderList  ";
-//        hsql+=" where 1=1 ";
-//        if(selectOrder!=null){
-//            for (Field f : selectOrder.getClass().getDeclaredFields()) {
-//                f.setAccessible(true);
-//                try {
-//                    if (f.get(selectOrder) != null) { //判断字段是否为空，并且对象属性中的基本都会转为对象类型来判断
-//                        hsql+=" and "+f.getName()+"='"+f.get(selectOrder)+"' ";
-//                    }
-//                } catch (IllegalArgumentException e) {
-//                    e.printStackTrace();
-//                } catch (IllegalAccessException e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//        }
-//        
-//        if(orderId!=null){
-//            hsql+=" and id>"+orderId;
-//        }
-//        Query query = getSession().createQuery(hsql);        
-//        return query.list();
-//    }
+    public void removeH5TagsByH5InfoId(Integer h5InfoId)throws Exception{
+        if(h5InfoId==null){
+            throw new Exception("删除H5Tag时,h5InfoId不能为空!");
+        }
+        String hsql="delete from H5Tag a where a.h5Info="+h5InfoId;
+        Query query = getSession().createQuery(hsql);  
+        query.executeUpdate();
+    }
     
     
     

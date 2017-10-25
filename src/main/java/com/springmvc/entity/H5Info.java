@@ -14,8 +14,6 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 
 import org.springframework.format.annotation.DateTimeFormat;
@@ -90,7 +88,8 @@ public class H5Info {
      */
     @Column(name="production_time")
     @DateTimeFormat(pattern="yyyy-MM-dd")
-    @Temporal(TemporalType.DATE)//返回前台时格式化数据使用
+//    @Temporal(TemporalType.DATE)//返回前台时格式化数据使用
+    @JsonFormat(pattern="yyyy-MM")//返回前台时格式化数据使用
     private Date productionTime;
 
     /**

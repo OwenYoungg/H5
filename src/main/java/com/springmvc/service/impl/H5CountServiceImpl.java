@@ -5,12 +5,14 @@ import java.util.List;
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.springmvc.entity.H5Count;
 import com.springmvc.repository.H5CountRepository;
 import com.springmvc.service.H5CountService;
 
 @Service
+@Transactional
 public class H5CountServiceImpl implements H5CountService {
     @Resource
     private H5CountRepository h5CountRepository;

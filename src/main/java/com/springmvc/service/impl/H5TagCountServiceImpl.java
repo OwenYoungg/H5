@@ -5,12 +5,14 @@ import java.util.List;
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.springmvc.entity.H5TagCount;
 import com.springmvc.repository.H5TagCountRepository;
 import com.springmvc.service.H5TagCountService;
 
 @Service
+@Transactional
 public class H5TagCountServiceImpl implements H5TagCountService {
     @Resource
     private H5TagCountRepository h5TagCountRepository;

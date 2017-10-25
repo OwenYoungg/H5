@@ -49,7 +49,113 @@ public class H5Controller {
     private String appid;
     @Value("${wechat_secret}")
     private String secret;
-    
+    @Autowired
+    private H5UsersService h5UsersService;
+    @RequestMapping(value="/views")
+    public Map<String, Object> views(HttpServletRequest request, HttpServletResponse response,
+            HttpSession session, Integer h5InfoId,Integer userId) {
+        Map<String, Object> map = new HashMap<>();
+        try {
+            if(h5InfoId==null){
+                map.put("SUCCESS", false);
+                map.put("MESSAGE", "浏览失败!h5InfoId不能为空!");
+                return map;                
+            }
+            H5Info h5Info=h5InfoService.getH5InfoById(h5InfoId);
+            if(h5Info==null){
+                map.put("SUCCESS", false);
+                map.put("MESSAGE", "浏览失败!查不到对应信息!id:"+h5Info);
+                return map;                
+            }
+            H5Users user=h5UsersService.getH5UsersById(userId);
+            if(user==null){
+                map.put("SUCCESS", false);
+                map.put("MESSAGE", "浏览失败!查不到对应用户信息!userid:"+userId);
+                return map;                  
+            }
+            h5CountService.increaseData(h5InfoId, 1);
+            map.put("DATA", h5Info);
+            map.put("SUCCESS", true);
+            map.put("MESSAGE", "浏览成功");
+            return map;
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            map.put("SUCCESS", false);
+            map.put("EXCEPTION", e.getMessage());
+            map.put("MESSAGE", "浏览失败!");
+            return map;
+        }
+    }
+    @RequestMapping(value="/share")
+    public Map<String, Object> share(HttpServletRequest request, HttpServletResponse response,
+            HttpSession session, Integer h5InfoId,Integer userId) {
+        Map<String, Object> map = new HashMap<>();
+        try {
+            if(h5InfoId==null){
+                map.put("SUCCESS", false);
+                map.put("MESSAGE", "分享失败!h5InfoId不能为空!");
+                return map;                
+            }
+            H5Info h5Info=h5InfoService.getH5InfoById(h5InfoId);
+            if(h5Info==null){
+                map.put("SUCCESS", false);
+                map.put("MESSAGE", "分享失败!查不到对应信息!id:"+h5Info);
+                return map;                
+            }
+            H5Users user=h5UsersService.getH5UsersById(userId);
+            if(user==null){
+                map.put("SUCCESS", false);
+                map.put("MESSAGE", "分享失败!查不到对应用户信息!userid:"+userId);
+                return map;                  
+            }
+            h5CountService.increaseData(h5InfoId, 2);
+            map.put("DATA", h5Info);
+            map.put("SUCCESS", true);
+            map.put("MESSAGE", "分享成功");
+            return map;
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            map.put("SUCCESS", false);
+            map.put("EXCEPTION", e.getMessage());
+            map.put("MESSAGE", "分享失败!");
+            return map;
+        }
+    }
+    @RequestMapping(value="/thumbUp")
+    public Map<String, Object> thumbUp(HttpServletRequest request, HttpServletResponse response,
+            HttpSession session, Integer h5InfoId,Integer userId) {
+        Map<String, Object> map = new HashMap<>();
+        try {
+            if(h5InfoId==null){
+                map.put("SUCCESS", false);
+                map.put("MESSAGE", "点赞失败!h5InfoId不能为空!");
+                return map;                
+            }
+            H5Info h5Info=h5InfoService.getH5InfoById(h5InfoId);
+            if(h5Info==null){
+                map.put("SUCCESS", false);
+                map.put("MESSAGE", "点赞失败!查不到对应信息!id:"+h5Info);
+                return map;                
+            }
+            H5Users user=h5UsersService.getH5UsersById(userId);
+            if(user==null){
+                map.put("SUCCESS", false);
+                map.put("MESSAGE", "点赞失败!查不到对应用户信息!userid:"+userId);
+                return map;                  
+            }
+            h5CountService.increaseData(h5InfoId, 3);
+            map.put("DATA", h5Info);
+            map.put("SUCCESS", true);
+            map.put("MESSAGE", "点赞成功");
+            return map;
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            map.put("SUCCESS", false);
+            map.put("EXCEPTION", e.getMessage());
+            map.put("MESSAGE", "点赞失败!");
+            return map;
+        }
+    }
     /**
      * @description 根据code得到token
      * @author guoyang

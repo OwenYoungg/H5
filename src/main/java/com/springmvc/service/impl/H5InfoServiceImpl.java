@@ -5,12 +5,14 @@ import java.util.List;
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.springmvc.entity.H5Info;
 import com.springmvc.repository.H5InfoRepository;
 import com.springmvc.service.H5InfoService;
 
 @Service
+@Transactional
 public class H5InfoServiceImpl implements H5InfoService {
     @Resource
     private H5InfoRepository h5InfoRepository;

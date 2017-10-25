@@ -14,7 +14,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 /**
@@ -25,6 +24,12 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @Entity
 @Table(name="h5_tag")
 public class H5Tag  {
+    public H5Tag(){
+    }
+    public H5Tag(String name,H5Info h5info){
+        this.name=name;
+        this.h5Info=h5info;
+    }
     /**
      * 
      */
