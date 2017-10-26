@@ -414,7 +414,7 @@
 					+ " embeddedIframe:" + embeddedIframe + " thumb:"+thumb);
 			  $.ajax({
 				 //url:"http://localhost:8080/H5/h5/save.json",//本地
-		         url:"http://47.93.191.140:8080/h5/save.json",//正式
+		         url:"http://m.wowh5.cn/h5/save.json",//正式
 				 type:"post",
 				 data:form,
 				 dataType:"json",
@@ -433,7 +433,7 @@
 		                
 		                $.ajax({
 		                	//url:"http://localhost:8080/H5/h5tag/batchSave.json", //本地
-		                	url:"http://47.93.191.140:8080/h5tag/batchSave.json",//正式
+		                	url:"http://m.wowh5.cn/h5tag/batchSave.json",//正式
 		                	type:"post",
 		       				 data:tagform,
 		       				 dataType:"json",
