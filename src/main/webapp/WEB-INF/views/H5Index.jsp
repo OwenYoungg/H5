@@ -400,11 +400,7 @@
 			var productionTime = $("#datetimepicker").val();
 			var embeddedIframe = $("#embedded").prop("checked");
 			var thumb = $("#url").val();
-			//获取标签参数
-			$("[name='tag']").each(function(){
-				alert($(this).val());
-				form.append("name",($(this).val()));
-			});
+			
 			form.append("title", title);
 			form.append("url", url);
 			form.append("company", company);
@@ -417,15 +413,36 @@
 					+ " product:" + product + " productionTime:" + productionTime
 					+ " embeddedIframe:" + embeddedIframe + " thumb:"+thumb);
 			  $.ajax({
-				 url:"http://localhost:8080/H5/h5/save.json",//本地
-		         //url:"http://47.93.191.140:8080/h5/save.json",//正式
+				 //url:"http://localhost:8080/H5/h5/save.json",//本地
+		         url:"http://47.93.191.140:8080/h5/save.json",//正式
 				 type:"post",
 				 data:form,
 				 dataType:"json",
 				 processData:false,
 				 contentType:false,
 				 success:function(data){
-		                alert(data.MESSAGE);
+		                var tagform = new FormData(); 
+		                var h5id = data.DATA.id;
+		                tagform.append("h5InfoId",h5id);
+		                //存储tag
+		              //获取标签参数
+		    			$("[name='tag']").each(function(){
+		    				//alert($(this).val());
+		    				tagform.append("name",($(this).val()));
+		    			});
+		                
+		                $.ajax({
+		                	//url:"http://localhost:8080/H5/h5tag/batchSave.json", //本地
+		                	url:"http://47.93.191.140:8080/h5tag/batchSave.json",//正式
+		                	type:"post",
+		       				 data:tagform,
+		       				 dataType:"json",
+		       				 processData:false,
+		       				 contentType:false,
+		       				 success:function(data){
+		       					alert(data.MESSAGE);
+		       				 }
+		                });
 				 }
 			 }); 
 	    })
