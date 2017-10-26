@@ -1,0 +1,206 @@
+.container {
+		background-color: #f0f0f6;
+		padding-left: 0.8em !important;
+		padding-right: 0.8em !important;
+	}
+
+	.head {
+		width: 10em;
+		margin: 10px auto;
+		overflow: hidden;
+		list-style-type: none;
+		padding: 0;
+	}
+
+	.head .nav-left {
+		text-align: center;
+		font-size: 1em;
+		color: #3b3b3b;
+		float: left;
+		width: 5em;
+		line-height: 1.85em;
+		border: 2px solid #3b3b3b;
+		border-right: 0;
+		border-radius: 1.14em 0 0 1.14em;
+	}
+
+	.head a {
+		color: #3b3b3b;
+		text-decoration: none;
+	}
+
+	.head .nav-right {
+		text-align: center;
+		float: left;
+		font-size: 1em;
+		color: #3b3b3b;
+		width: 5em;
+		line-height: 1.85em;
+		margin-left: -1px;
+		border: 2px solid #3b3b3b;
+		border-left: 0;
+		border-radius: 0 1.14em 1.14em 0;
+	}
+
+	.head .active {
+		background-color: #3b3b3b;
+	}
+
+	.head .active a {
+		color: #fff;
+	}
+
+	.model {
+		position: relative;
+		overflow: hidden;
+		border-radius: 1em;
+		margin-bottom: 0.8em;
+	}
+
+	.model .m-img {
+		max-width: 100%;
+		height: 12.7em;
+		overflow: hidden;
+		
+	}
+
+	.model .m-img img {
+		width: 100%;
+		height: 100%;
+	}
+
+	.model .m-img .img-mes {
+		position: absolute;
+		top: 10.7em;
+		left: 0;
+		width: 100%;
+	}
+
+	.m-img .img-mes .start-time {
+		display: inline-block;
+		float: left;
+		line-height: 1.14em;
+		margin-top: 0.28em;
+		color: #fff;
+		padding-left: 0.28em;
+	}
+
+	.m-img .img-mes .likes {
+		position: relative;
+		padding: 0.28em 0.28em 0.28em 2em;
+		display: inline-block;
+		float: right;
+		line-height: 1.15em;
+		border-radius: 1.14em 0 0 1.14em;
+		background-color: #000;
+		opacity: 0.6;
+		color: #fff;
+	}
+
+	.m-img .img-mes .likes span {
+		position: absolute; 
+		display: inline-block;
+		width: 1.28em;
+		height: 1.28em;
+		background-image: url("../../xxh/icon/fabulous_btn.png");
+		background-repeat: no-repeat;
+		background-size: 100%;
+		margin-left: 0.28em;
+		left: 0.28em;
+		top: 0.28em;
+	}
+
+	.model .model-mes {
+		width: 100%;
+		height: 4.2em;
+		background-color: #fff;
+		opacity: 1;
+	}
+
+	.model .model-mes .title {
+		font-size: 1em;
+		font-weight: 600;
+		padding: 0.35em 0.7em;
+	}
+
+	.model .model-mes .from {
+		padding-left: 0.7em;
+		color: #a6a6a6;
+	}
+
+	.model .model-mes .from span {
+		margin-left: 0.35em;
+	}
+
+	.model .model-mes p {
+		margin: 0;
+	}
+
+	#back-to-top {
+		
+	}
+	
+	#back-to-top .normal {
+		float: left;
+		text-align: center;
+		color: #828282;
+		width: 100%;
+		margin-bottom: 0.7em;
+	}
+
+	.back-top-icon {
+		width: 34px;
+		height: 34px;
+		border-radius: 50%;
+		background-color: #fff;
+		opacity: 1;
+		float: right;
+		box-shadow: 0px 0px 3px 1px #b3b3b3;
+	}
+
+	.back-top-icon span {
+		display: block;
+		width: 1.71em;
+		height: 1.71em;
+		background-image: url("../../xxh/icon/top.png");
+		background-repeat: no-repeat;
+		background-size: 100%;
+		margin-top: 0.35em;
+		margin-left: 0.35em;
+		float: left;
+	}
+
+	.model .model-mes .title .top-three {
+		width: 1.14em;
+		height: 1.14em;
+		display: inline-block;
+		background-repeat: no-repeat;
+		background-size: 100%;
+		vertical-align: middle;
+		margin-top: -3px;
+	}
+
+	.top-three.gold-medal {
+		background-image: url("../../xxh/icon/gold_icn.png");
+	}
+
+	.top-three.silver-medal {
+		background-image: url("../../xxh/icon/silver medal_icn.png");
+	}
+
+	.top-three.bronze-medal {
+		background-image: url("../../xxh/icon/bronze medal_icn.png");
+	}
+
+	.model .model-mes .from {
+		padding-left: 10px;
+		color: #a6a6a6;
+	}
+
+	.model .model-mes .from span {
+		margin-left: 5pt;
+	}
+
+	.model .model-mes p {
+		margin: 0;
+	}

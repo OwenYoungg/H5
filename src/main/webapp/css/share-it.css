@@ -1,0 +1,63 @@
+p {
+		margin: 0;
+	}
+
+	.user-review {
+		width: 100%;
+		overflow: hidden;
+		margin-top: 1.42em;
+	}
+
+	.user-review .user-mes {
+		margin-bottom: 0.71em;
+		overflow: hidden;
+	}
+
+	.user-review .user-mes .user-avatar {
+		display: inline-block;
+		width: 2.57em;
+		height: 2.57em;
+		border-radius: 50%;
+		text-align: center;
+		overflow: hidden;
+		float: left;
+	}
+
+	.user-review .user-mes .user-name {
+		display: inline-block;
+		float: left;
+		line-height: 2.57em;
+		font-weight: bold;
+		margin-left: 0.71em;
+	}
+
+	.user-mes .user-avatar img {
+		width: 100%;
+		height: 100%;
+	}
+
+	.user-review  .review-content {
+		width: 100%;
+		position: relative;
+		background-color: #fff;
+		border-radius: 0.57em;
+		opacity: 1;
+		padding: 0.71em;
+		margin-bottom: 0.71em;
+	}
+
+	.user-review  .review-content:before {
+		content: '';
+		position: absolute;
+		top: 0.36em;
+		left: 0.71em;
+		width: 0;
+		height: 0;
+		border-left: 0.71em solid transparent;
+		border-right: 0.71em solid transparent;
+		border-bottom: 0.42em solid #fff;
+	}
+
+	.clear {
+		clear: both;
+	}

@@ -41,7 +41,16 @@
 		<servlet-name>H5</servlet-name>
 		<url-pattern>*.json</url-pattern>
 	</servlet-mapping>
-
+    <!-- CORS过滤器 start -->  
+	<filter>  
+	    <filter-name>cors</filter-name>  
+	    <filter-class>com.springmvc.filter.CorsFilter</filter-class>  
+	</filter>  
+	<filter-mapping>  
+	    <filter-name>cors</filter-name>  
+	    <url-pattern>/*</url-pattern>  
+	</filter-mapping>  
+	<!-- CORS过滤器 end -->  
 
 	<!-- shiro -->
 	<filter>

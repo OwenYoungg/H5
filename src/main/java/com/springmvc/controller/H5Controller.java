@@ -51,6 +51,8 @@ public class H5Controller {
     private String appid;
     @Value("${wechat_secret}")
     private String secret;
+    @Value("${pic_uri}")
+    private String picUri;
     @Autowired
     private H5UsersService h5UsersService;
     @RequestMapping(value="/views")
@@ -428,9 +430,9 @@ public class H5Controller {
 
         String url="";
         try {
-            String root=request.getSession().getServletContext().getRealPath("/");
+//            String root=request.getSession().getServletContext().getRealPath("/");
             String fileName=new Date().getTime()+file.getOriginalFilename();
-            String uri=root+"images\\"+fileName;
+            String uri=picUri+fileName;
             //获取输出流
             OutputStream os=new FileOutputStream(uri);
             //获取输入流 CommonsMultipartFile 中可以直接得到文件的流
