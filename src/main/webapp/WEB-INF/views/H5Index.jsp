@@ -277,7 +277,8 @@
 	        swf: '../css/Uploader.swf',
 
 	        // 文件接收服务端。
-	        server: 'http://localhost:8080/H5/h5/fileUpload.json',
+	        //server: 'http://localhost:8080/H5/h5/fileUpload.json',//测试
+            server:'http://m.wowh5.cn/h5/fileUpload.json',//正式
 
 	        // 选择文件的按钮。可选。
 	        // 内部根据当前运行是创建，可能是input元素，也可能是flash.
