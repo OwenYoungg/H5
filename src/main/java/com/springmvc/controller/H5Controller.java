@@ -26,6 +26,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.mysql.jdbc.StringUtils;
 import com.springmvc.entity.H5Count;
 import com.springmvc.entity.H5Info;
 import com.springmvc.entity.H5Users;
@@ -463,10 +464,50 @@ public class H5Controller {
         return map;
     }
     
+    /**
+     * 进入管理平台首页
+     * @param request
+     * @param response
+     * @return
+     */
     @RequestMapping(value="/H5Index",method={RequestMethod.GET})
     public ModelAndView H5AdminIndex(HttpServletRequest request, HttpServletResponse response){
     	ModelAndView view = new ModelAndView();
-		view.setViewName("H5Index");
+		view.setViewName("management/H5Index");
 		return view;
+    }
+    
+    @RequestMapping(value="/WowH5List",method={RequestMethod.GET})
+    public ModelAndView wowH5List(HttpServletRequest request, HttpServletResponse response){
+    	logger.info("执行wowH5List...");
+    	ModelAndView mv = new ModelAndView();
+    	mv.setViewName("wowh5/WowH5List");
+    	try {
+    		String typeStr = request.getParameter("type");
+    		String pageNumStr = request.getParameter("pageNum");
+    		String pageCountStr = request.getParameter("pageCount");
+    		Integer type,pageNum,pageCount;
+    		if(StringUtils.isNullOrEmpty(typeStr))
+    			type = 1;
+    		else 
+    			type = Integer.parseInt(request.getParameter("type"));
+    		if(StringUtils.isNullOrEmpty(pageNumStr))
+    			pageNum = 1;
+    		else
+    			pageNum = Integer.parseInt(pageNumStr);
+    		if(StringUtils.isNullOrEmpty(pageCountStr))
+    			pageCount = 20;
+    		else
+    			pageCount = Integer.parseInt(pageCountStr);
+			logger.info("type:"+type+",pageNum:"+pageNum+",pageCount:"+pageCount);
+			
+			List<H5Info> list =h5InfoService.getH5InfoList(type,pageNum,pageCount);
+			mv.addObject("list", list);
+			
+		} catch (NumberFormatException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	return mv;
     }
 }
