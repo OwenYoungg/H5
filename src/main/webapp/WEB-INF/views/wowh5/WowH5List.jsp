@@ -44,7 +44,7 @@
 	</div>
 	
 	<div role="tabpanel" class="tab-pane active" id="profile">
-		<c:forEach items="${list2}" var="item">
+		<c:forEach items="${list2}" var="item" varStatus="status">
 			<div class="model">
 				<div class="m-img">
 					<img src="${item.thumb }"></img>
@@ -59,6 +59,9 @@
 				<div class="model-mes">
 					<p class="title">
 						${item.title}
+						<c:if test="${status.index eq 0 }"><img src="../icon/gold_icn.png"/></c:if>
+						<c:if test="${status.index eq 1 }"><img src="../icon/silver medal_icn.png"/></c:if>
+						<c:if test="${status.index eq 2 }"><img src="../icon/bronze medal_icn.png"/></c:if>
 					</p>
 					<div class="from">
 						出品公司：<span>${item.company }</span><span>${item.product }</span>
