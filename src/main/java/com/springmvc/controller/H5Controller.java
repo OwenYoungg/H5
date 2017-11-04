@@ -483,14 +483,9 @@ public class H5Controller {
     	ModelAndView mv = new ModelAndView();
     	mv.setViewName("wowh5/WowH5List");
     	try {
-    		String typeStr = request.getParameter("type");
     		String pageNumStr = request.getParameter("pageNum");
     		String pageCountStr = request.getParameter("pageCount");
-    		Integer type,pageNum,pageCount;
-    		if(StringUtils.isNullOrEmpty(typeStr))
-    			type = 1;
-    		else 
-    			type = Integer.parseInt(request.getParameter("type"));
+    		Integer pageNum,pageCount;
     		if(StringUtils.isNullOrEmpty(pageNumStr))
     			pageNum = 1;
     		else
@@ -499,10 +494,13 @@ public class H5Controller {
     			pageCount = 20;
     		else
     			pageCount = Integer.parseInt(pageCountStr);
-			logger.info("type:"+type+",pageNum:"+pageNum+",pageCount:"+pageCount);
-			
-			List<H5Info> list =h5InfoService.getH5InfoList(type,pageNum,pageCount);
-			mv.addObject("list", list);
+			logger.info("pageNum:"+pageNum+",pageCount:"+pageCount);
+			//获取新人秀列表
+			List<H5Info> list1 =h5InfoService.getH5InfoList(1,pageNum,pageCount);
+			//获取名人堂列表
+			List<H5Info> list2 =h5InfoService.getH5InfoList(2,pageNum,pageCount);
+			mv.addObject("list1", list1);
+			mv.addObject("list2", list2);
 			
 		} catch (NumberFormatException e) {
 			// TODO Auto-generated catch block

@@ -19,7 +19,32 @@
 	</ul>
 	<div class="tab-content">
     <div role="tabpanel" class="tab-pane active" id="home">
-		<c:forEach items="${list}" var="item">
+		<c:forEach items="${list1}" var="item">
+			<div class="model">
+				<div class="m-img">
+					<img src="${item.thumb }"></img>
+					<div class="img-mes">
+						<div class="start-time">${item.productionTime }</div>
+						<div class="likes">
+							<span>${item.productionTime }</span>
+							${item.h5Count.goodTimes }
+						</div>
+					</div>
+				</div>
+				<div class="model-mes">
+					<p class="title">
+						${item.title}
+					</p>
+					<div class="from">
+						出品公司：<span>${item.company }</span><span>${item.product }</span>
+					</div>
+				</div>
+			</div>
+		</c:forEach>		
+	</div>
+	
+	<div role="tabpanel" class="tab-pane active" id="profile">
+		<c:forEach items="${list2}" var="item">
 			<div class="model">
 				<div class="m-img">
 					<img src="${item.thumb }"></img>
