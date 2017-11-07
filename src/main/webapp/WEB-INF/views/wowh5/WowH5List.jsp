@@ -26,7 +26,7 @@
 					<div class="img-mes">
 						<div class="start-time">${item.productionTime }</div>
 						<div class="likes">
-							<span>${item.productionTime }</span>
+							<span></span>
 							${item.h5Count.goodTimes }
 						</div>
 					</div>
@@ -51,7 +51,7 @@
 					<div class="img-mes">
 						<div class="start-time">${item.productionTime }</div>
 						<div class="likes">
-							<span>${item.productionTime }</span>
+							<span></span>
 							${item.h5Count.goodTimes }
 						</div>
 					</div>
