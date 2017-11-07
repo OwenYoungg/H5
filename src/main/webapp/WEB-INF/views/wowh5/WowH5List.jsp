@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=utf-8"
     pageEncoding="utf-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jstl/fmt_rt"%> 
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -24,7 +25,7 @@
 				<div class="m-img">
 					<img src="${item.thumb }"></img>
 					<div class="img-mes">
-						<div class="start-time">${item.productionTime }</div>
+						<div class="start-time"><fmt:formatDate value="${item.productionTime }" type="date" dateStyle="long"/>上线</div>
 						<div class="likes">
 							<span></span>
 							${item.h5Count.goodTimes }
@@ -49,7 +50,7 @@
 				<div class="m-img">
 					<img src="${item.thumb }"></img>
 					<div class="img-mes">
-						<div class="start-time">${item.productionTime }</div>
+						<div class="start-time"><fmt:formatDate value="${item.productionTime }" type="date" dateStyle="long"/>上线</div>
 						<div class="likes">
 							<span></span>
 							${item.h5Count.goodTimes }
